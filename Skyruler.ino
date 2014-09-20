@@ -1,0 +1,1106 @@
+
+
+
+#include <FrequencyTimer2.h>
+
+#define SPACE { \
+    {0, 0, 0, 0, 0, 0, 0, 0},  \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0}, \
+    {0, 0, 0, 0, 0, 0, 0, 0} \
+}
+
+#define H { \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 1, 1, 1, 1, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}  \
+}
+
+#define E  { \
+    {0, 1, 1, 1, 1, 1, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 1, 1, 1, 1, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 1, 1, 1, 1, 1, 0}  \
+}
+
+#define L { \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 0, 0}, \
+    {0, 1, 1, 1, 1, 1, 1, 0}  \
+}
+
+#define O { \
+    {0, 0, 0, 1, 1, 0, 0, 0}, \
+    {0, 0, 1, 0, 0, 1, 0, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 1, 0, 0, 0, 0, 1, 0}, \
+    {0, 0, 1, 0, 0, 1, 0, 0}, \
+    {0, 0, 0, 1, 1, 0, 0, 0}  \
+}
+
+
+#define S { \
+{1, 1, 1, 1, 1, 1, 1, 1}, \
+{1, 0, 0, 0, 0, 0, 0, 0}, \
+{1, 0, 0, 0, 0, 0, 0, 0}, \
+{1, 1, 1, 1, 1, 1, 1, 1}, \
+{0, 0, 0, 0, 0, 0, 0, 1}, \
+{0, 0, 0, 0, 0, 0, 0, 1}, \
+{0, 0, 0, 0, 0, 0, 0, 1}, \
+{1, 1, 1, 1, 1, 1, 1, 1} \
+}
+#define E { \
+{0, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 1, 1, 1, 1, 1, 0} \
+}
+#define L { \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 1, 1, 1, 1, 1, 0} \
+}
+#define O { \
+{0, 0, 0, 1, 1, 0, 0, 0}, \
+{0, 0, 1, 0, 0, 1, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 0, 1, 0, 0, 1, 0, 0}, \
+{0, 0, 0, 1, 1, 0, 0, 0} \
+}
+#define H { \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0} \
+}
+#define C { \
+{0, 0, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 1, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 1, 0, 0, 0, 0, 0}, \
+{0, 0, 1, 1, 1, 1, 1, 0} \
+}
+#define R { \
+{0, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 0, 1, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 1, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 1, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0} \
+}
+#define J { \
+{0, 1, 1, 1, 1, 1, 1, 1}, \
+{0, 0, 0, 0, 1, 0, 0, 0}, \
+{0, 0, 0, 0, 1, 0, 0, 0}, \
+{0, 0, 0, 0, 1, 0, 0, 0}, \
+{0, 0, 0, 0, 1, 0, 0, 0}, \
+{0, 0, 0, 0, 1, 0, 0, 0}, \
+{0, 0, 0, 0, 1, 0, 0, 0}, \
+{0, 1, 1, 1, 1, 0, 0, 0} \
+}
+#define N { \
+{0, 0, 0, 0, 0, 0, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 1, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 1, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 1, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 1, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0} \
+}
+#define M { \
+{1, 0, 0, 0, 0, 0, 0, 1}, \
+{1, 1, 0, 0, 0, 0, 1, 1}, \
+{1, 0, 1, 0, 0, 1, 0, 1}, \
+{1, 0, 0, 1, 1, 0, 0, 1}, \
+{1, 0, 0, 0, 0, 0, 0, 1}, \
+{1, 0, 0, 0, 0, 0, 0, 1}, \
+{1, 0, 0, 0, 0, 0, 0, 1}, \
+{1, 0, 0, 0, 0, 0, 0, 1} \
+}
+#define A { \
+{0, 0, 1, 1, 1, 1, 0, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0}, \
+{0, 1, 0, 0, 0, 0, 1, 0} \
+}
+#define T { \
+{1, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0} \
+}
+
+#define I { \
+{1, 1, 1, 1, 1, 1, 1, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{0, 0, 0, 1, 0, 0, 0, 0}, \
+{1, 1, 1, 1, 1, 1, 1, 0} \
+}
+//shows if still in setup method or not
+boolean inSetup = true;
+//score of player
+int score = 0;
+//where the wall is positioned vertically
+int wallPos;
+//position of hole in wall horizontally
+int wallHole;
+//number of leds on side
+int length = 8;
+//end of game
+boolean endAll = false;
+boolean wallActive;
+int ground = 0;
+int playerPos = 2;
+int wallDelay = 600;
+int scanDelay = 1;
+int leftButton = 19;
+int rightButton = 18;
+//switches between displaying wall and player
+boolean off = false; 
+
+// pin[xx] on led matrix connected to nn on Arduino (-1 is dummy to make array start at pos 1)
+int pins[17]= {
+  -1, 5, 4, 3, 2, 13, 12, 11, 10, 9, 8, 7, 6, 14, 15, 16, 17};
+
+// col[xx] of leds = pin yy on led matrix
+int col[8] = {
+  pins[9] , pins[10], pins[11], pins[12],  pins[1], pins[2], pins[3], pins[4]};
+
+// row[xx] of leds = pin yy on led matrix
+int row[8] = {
+  pins[13], pins[14], pins[15], pins[16], pins[8], pins[7], pins[6], pins[5]};  
+
+const int numPatterns = 17;
+//moving letters in beginning
+byte patterns[numPatterns][8][8] = {
+  SPACE,J,O,N,A,T,H,A,N, SPACE, M,I,C,A,I,A,H,
+};
+
+int pattern = 0;
+
+byte coll = 0; 
+
+byte leds[8][8];
+
+
+void setup(){
+  //set columns to output
+  for (int i =0; i < length; i++){
+    pinMode(col[i], OUTPUT); 
+  }
+
+  //set row to output
+  for (int i =0; i < length; i++){
+    pinMode(row[i], OUTPUT); 
+  }
+
+//walls starts on the top
+  wallPos = length-1;
+
+//wall is appeared on screen
+  wallActive = true;
+
+  wallHole = 4; 
+
+  pinMode(leftButton, INPUT);
+  pinMode(rightButton, INPUT);
+
+  // Turn off toggling of pin 11
+  FrequencyTimer2::disable();
+  //Set refresh rate (interrupt timeout period)
+  FrequencyTimer2::setPeriod(1000);
+  // Set interrupt routine to be called
+  FrequencyTimer2::setOnOverflow(display);
+  
+  //displays message in beginning
+  for(int i = 0; i < 17; i++){
+   openMessage(); 
+  }
+inSetup = false;
+}
+
+//creates wall on the top
+void createWall(){
+  wallActive= true;
+  wallPos = length;
+  //randomly generates hole in top wall
+  wallHole= ((int)(random(length)));
+}
+
+
+void loop(){
+  inSetup = false;
+  play();
+}
+
+//show current wall
+void displayWall (){
+  digitalWrite(row[wallHole], HIGH);
+  digitalWrite(col[wallPos], HIGH);
+}
+
+//shows one pixel player at bottom
+void displayPlayer(){
+  for(int i = 0; i < length; i++){
+    digitalWrite(row[i], HIGH);
+  } 
+  digitalWrite(col[ground], HIGH);
+
+  digitalWrite(row[playerPos], LOW);
+}
+
+//shows both wall and player
+void displayAll(){
+  allOff();   
+  if(off){  
+    displayWall();
+    off = false;
+  }
+  else{
+    displayPlayer();
+    off = true;
+  }
+
+}
+
+//turns off all outputs
+void allOff(){
+  for (int i = 0; i < length; i++){
+    digitalWrite(col[i], LOW);
+  }
+  for (int i = 0; i < length; i++){
+    digitalWrite(row[i], LOW);
+  }
+}
+
+
+//checks to see if wall hits player
+void checkContact(){
+  if(wallActive){
+    if(wallPos == 0){
+      if(wallHole != playerPos){
+        endGame();
+      }
+    }
+    else if(wallPos == -1){
+      wallActive = false;
+    }
+  } 
+}
+
+
+//ends game by turning all lights off
+void endGame(){
+  allOff(); 
+  endAll = true;
+}
+
+
+//creates wall on the top if no wall is present
+//moves down wall one position
+void update(){
+
+  if(wallPos == 0){
+    createWall(); 
+    score++;
+    //each update, the walls move down faster but cant be faster than 5 milliseconds delay
+    if(wallDelay > 75){
+      wallDelay = wallDelay/1.1;
+    }
+
+  }
+  else{
+    wallPos = wallPos -1; 
+    checkContact();
+  }
+
+}
+
+//checks the buttons to seeif they were pressed
+void checkPress(){
+  int leftButtonState = digitalRead(leftButton);
+  int rightButtonState = digitalRead(rightButton);
+  //moved boolean shows if the player moved or not
+  boolean moved = false;
+  if(rightButtonState == HIGH){
+    if(playerPos != length-1){
+      playerPos = playerPos +1; 
+      moved = true;
+    }
+  }
+
+  if(leftButtonState == HIGH){
+    if(playerPos != 0){
+      playerPos = playerPos -1; 
+      moved = true;
+    }
+  }
+
+//if the player moves and the wall is at the bottom, the game ends
+  if(moved == true && wallPos == 0){
+    endGame();
+  }
+
+
+}
+
+//first shows the message then the real game
+void display(){
+  if(inSetup){
+   displayer(); 
+  }
+  
+else{
+  if(!endAll){
+    displayAll();
+  }
+}
+}
+
+//end game animation
+void showAll(){
+  for(int i = 0; i < 8; i++ ){
+    digitalWrite(col[i], HIGH);
+    delay(wallDelay);
+
+  }
+  for(int j =0; j< 8; j++){
+    digitalWrite(row[j], HIGH);
+    delay(wallDelay);
+
+  }
+
+}
+
+//plays game
+void play(){
+  if(!endAll){
+    for(int i = 0; i < 7; i++){
+      delay(wallDelay/7);
+      checkPress();
+    }
+
+    update();
+
+  }
+  else{
+    allOff();
+    displayScore(); 
+  }
+}
+
+
+//displays number one
+void displayOne(){
+
+    for(int i = 1; i < length-1; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 4){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+  
+}
+
+//displays number two
+void displayTwo(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 3; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 1; i < length-5; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+
+    delay(scanDelay);
+    allOff();
+  
+
+}
+
+//displays number three
+void displayThree(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+  
+}
+
+//displays number four
+void displayFour(){
+
+
+
+    for(int i = 0; i < length-1; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 5){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    digitalWrite(row[6], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 4; i < length-1; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff(); 
+
+
+  
+}
+
+//displays number five
+void displayFive(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 3; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 1; i < length-5; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+
+    delay(scanDelay);
+    allOff();
+  
+}
+
+//displays number six
+void displaySix(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 1; i < length-5; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+
+    delay(scanDelay);
+    allOff();
+  
+}
+
+//displays number seven
+void displaySeven(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[1], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+
+    for(int i = 6; i >= 2; i--){
+      showOne(i, i-1);
+      delay(scanDelay);
+      allOff();
+    } 
+
+
+  
+}
+
+//displays number eight
+void displayEight(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-1; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+
+    delay(scanDelay);
+    allOff();
+  
+}
+
+//displays number nine
+void displayNine(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 3; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+
+    digitalWrite(col[3], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-1; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+
+    delay(scanDelay);
+    allOff();
+  
+}
+
+//displays number zero
+void displayZero(){
+
+
+    digitalWrite(col[6], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-2; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 1){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+    delay(scanDelay);
+    allOff();  
+
+    digitalWrite(col[0], HIGH);
+    digitalWrite(row[0], HIGH);
+    digitalWrite(row[7], HIGH);
+    delay(scanDelay);
+    allOff();
+
+    for(int i = 0; i < length-1; i++){
+      digitalWrite(col[i], HIGH); 
+    }
+
+    for(int j = 0; j < length; j++){
+      if(j != 6){
+        digitalWrite(row[j], HIGH); 
+      }
+
+    }
+
+    delay(scanDelay);
+    allOff();
+  
+}
+
+//displays a specific pixel on screen
+void showOne(int rowNum, int colNum){
+  digitalWrite(col[colNum], HIGH);
+
+  for(int i = 0; i < length; i++){
+    if(i != rowNum){
+      digitalWrite(row[i], HIGH);
+    }
+  } 
+
+}
+
+// Interrupt routine
+void displayer() {
+  digitalWrite(col[coll], LOW);  // Turn whole previous column off
+  coll++;
+  if (coll == 8) {
+    coll = 0;
+  }
+  for (int rower = 0; rower < 8; rower++) {
+    if (leds[7-coll][rower] == 1) {
+      digitalWrite(row[rower], LOW);  // Turn on this led
+    }
+    else {
+      digitalWrite(row[rower], HIGH); // Turn off this led
+    }
+  }
+  digitalWrite(col[coll], HIGH); // Turn whole column on at once (for equal lighting times)
+}
+
+
+//slides the letter to one side
+void slidePattern(int pattern, int del) {
+  for (int l = 0; l < 8; l++) {
+    for (int i = 0; i < 7; i++) {
+      for (int j = 0; j < 8; j++) {
+        leds[j][i] = leds[j][i+1];
+      }
+    }
+    for (int j = 0; j < 8; j++) {
+      leds[j][7] = patterns[pattern][j][0 + l];
+    }
+    delay(del);
+  }
+}
+
+//shows jonathan micaiah message in beginning
+void openMessage() {
+  pattern = ++pattern % numPatterns;
+  slidePattern(pattern, 60);
+}
+
+//shows pattern
+void setPattern(int pattern) {
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      leds[i][j] = patterns[pattern][i][j];
+    }
+  }
+}
+
+//displays score 
+void displayScore(){
+  showAll();
+  allOff();
+
+
+
+if(score <= 9){
+
+    if(score == 1){
+      for(int i = 0; i < 10000; i++){
+      displayOne();
+      }
+    } 
+
+    else if(score == 2){
+      for(int i = 0; i < 10000; i++){
+      displayTwo();
+      }
+    } 
+    else if(score == 3){
+      for(int i = 0; i < 10000; i++){
+      displayThree();
+      }
+    } 
+    else if(score == 4){
+      for(int i = 0; i < 10000; i++){
+      displayFour();
+      }
+    } 
+    else if(score == 5){
+      for(int i = 0; i < 10000; i++){
+      displayFive();
+      }
+    } 
+    else if(score == 6){
+      for(int i = 0; i < 10000; i++){
+      displaySix();
+      }
+    } 
+    else if(score == 7){
+      for(int i = 0; i < 10000; i++){
+      displaySeven();
+      }
+    } 
+    else if(score == 8){
+      for(int i = 0; i < 10000; i++){
+      displayEight();
+      }
+    } 
+    else if(score == 9){
+      for(int i = 0; i < 10000; i++){
+      displayNine();
+      }
+    } 
+    
+    else if(score == 0){
+      for(int i = 0; i < 10000; i++){
+      displayZero();
+     
+    }
+  }
+}
+
+else{
+     for(int i = 0; i < 20000; i++){
+      
+   displayOne(); 
+    }
+  if(score == 10){
+ 
+    for(int i = 0; i < 1000; i++){
+      
+   displayZero(); 
+    }
+  }
+  
+  if(score == 11){
+    allOff();
+    delay(400);
+    for(int i = 0; i < 10000; i++){
+      
+   displayOne(); 
+    }
+  }
+  
+  if(score == 12){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displayTwo(); 
+    }
+  }
+  
+  if(score == 13){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displayThree(); 
+    }
+  }
+  
+  if(score == 14){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displayFour(); 
+    }
+  }
+  
+  if(score == 15){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displayFive(); 
+    }
+  }
+  
+  if(score == 16){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displaySix(); 
+    }
+  }
+  
+  if(score == 17){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displaySeven(); 
+    }
+  }
+  
+  if(score == 18){
+
+    for(int i = 0; i < 1000; i++){
+      
+   displayEight(); 
+    }
+  }
+  
+   if(score == 19){
+    for(int i = 0; i < 1000; i++){
+      
+   displayNine(); 
+    }
+  }
+  
+
+  
+  
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
